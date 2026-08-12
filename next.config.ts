@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'standalone', // এই লাইনটি যোগ করুন
+  // Vercel handles output optimization automatically
 };
 
 export default nextConfig;

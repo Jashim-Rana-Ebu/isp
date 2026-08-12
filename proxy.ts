@@ -41,18 +41,7 @@ export async function proxy(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
       url.searchParams.set("redirect", pathname);
-      
-      const allCookies = request.cookies.getAll();
-      url.searchParams.set("cookie_count", allCookies.length.toString());
-      
-      if (error) {
-        url.searchParams.set("error", error.message);
-      }
-      const response = NextResponse.redirect(url);
-      supabaseResponse.cookies.getAll().forEach((cookie) => {
-        response.cookies.set(cookie.name, cookie.value);
-      });
-      return response;
+      return NextResponse.redirect(url);
     }
 
     // Check if user has admin-level role
@@ -70,19 +59,11 @@ export async function proxy(request: NextRequest) {
       if (roleName === "customer") {
         const url = request.nextUrl.clone();
         url.pathname = "/customer/dashboard";
-        const response = NextResponse.redirect(url);
-        supabaseResponse.cookies.getAll().forEach((cookie) => {
-          response.cookies.set(cookie.name, cookie.value);
-        });
-        return response;
+        return NextResponse.redirect(url);
       }
       const url = request.nextUrl.clone();
       url.pathname = "/login";
-      const response = NextResponse.redirect(url);
-      supabaseResponse.cookies.getAll().forEach((cookie) => {
-        response.cookies.set(cookie.name, cookie.value);
-      });
-      return response;
+      return NextResponse.redirect(url);
     }
   }
 
@@ -92,11 +73,7 @@ export async function proxy(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
       url.searchParams.set("redirect", pathname);
-      const response = NextResponse.redirect(url);
-      supabaseResponse.cookies.getAll().forEach((cookie) => {
-        response.cookies.set(cookie.name, cookie.value);
-      });
-      return response;
+      return NextResponse.redirect(url);
     }
   }
 
@@ -116,11 +93,7 @@ export async function proxy(request: NextRequest) {
     } else {
       url.pathname = "/dashboard";
     }
-    const response = NextResponse.redirect(url);
-    supabaseResponse.cookies.getAll().forEach((cookie) => {
-      response.cookies.set(cookie.name, cookie.value);
-    });
-    return response;
+    return NextResponse.redirect(url);
   }
 
   return supabaseResponse;

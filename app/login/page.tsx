@@ -28,12 +28,19 @@ export default function LoginPage() {
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
+      const { error: authError, data } = await supabase.auth.signInWithPassword({
         email: identifier,
         password,
       });
       if (authError) throw authError;
-      router.push("/dashboard");
+      
+      // Ensure session is stored
+      if (data.session) {
+        await supabase.auth.setSession(data.session);
+      }
+      
+      // Force a hard navigation to ensure cookies are set
+      window.location.href = "/dashboard";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
       setError(message);

@@ -1,0 +1,391 @@
+@import "tailwindcss";
+
+@theme {
+  --font-hanken-grotesk: var(--font-hanken-grotesk);
+  --font-inter: var(--font-inter);
+  --font-jetbrains-mono: var(--font-jetbrains-mono);
+
+  --color-surface: #09090b;
+  --color-surface-dim: #0e0e13;
+  --color-surface-bright: #18181b;
+  --color-surface-container-lowest: #09090b;
+  --color-surface-container-low: #121219;
+  --color-surface-container: #18181b;
+  --color-surface-container-high: #1f1f24;
+  --color-surface-container-highest: #27272a;
+  
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #a1a1aa;
+  
+  --color-background: #09090b;
+  --color-on-background: #e2e8f0;
+  
+  --color-primary: #a78bfa;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #7c3aed;
+  --color-on-primary-container: #ffffff;
+  --color-primary-fixed: #e9ddff;
+  
+  --color-secondary: #ecffe3;
+  --color-secondary-container: #13ff43;
+  --color-tertiary: #ffb599;
+  
+  --color-surface-card: #121219;
+  --color-border-muted: #27272a;
+  --color-outline: #71717a;
+  --color-outline-variant: #3f3f46;
+  
+  --color-status-optimal: #00FF41;
+  --color-status-latency: #FFD300;
+  --color-status-outage: #FF3131;
+}
+
+/* =============================================
+   GLOBAL STYLES - Command Center Dark
+   ============================================= */
+
+:root {
+  --color-primary-container: #7c3aed;
+  --color-primary: #a78bfa;
+  --color-surface-card: #121219;
+  --color-border-muted: #27272a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px; /* Accounts for promo banner + sticky navbar + spacing */
+}
+
+body {
+  background-color: #09090b;
+  color: #e2e8f0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Selection */
+::selection {
+  background-color: #6200ea;
+  color: white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #131318;
+}
+::-webkit-scrollbar-thumb {
+  background: #494456;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cfbcff;
+}
+
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
+
+.glass-panel {
+  background: rgba(22, 22, 30, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(42, 42, 53, 0.8);
+}
+
+.glass-card {
+  background-color: rgba(18, 18, 22, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #27272a;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.neon-glow {
+  box-shadow: 0 0 15px rgba(98, 0, 234, 0.3);
+  transition: box-shadow 0.2s ease;
+}
+
+.neon-glow:hover {
+  box-shadow: 0 0 25px rgba(98, 0, 234, 0.6);
+}
+
+.neon-green-glow {
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.4);
+}
+
+/* =============================================
+   ANIMATIONS
+   ============================================= */
+
+@keyframes statusPulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(0, 255, 65, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+}
+
+.status-pulse {
+  animation: statusPulse 2s infinite;
+}
+
+@keyframes orbitSpin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes orbitSpinReverse {
+  100% { transform: rotate(-360deg); }
+}
+
+.orbit-ring {
+  animation: orbitSpin 30s linear infinite;
+}
+
+/* Counter-rotate children so they stay upright */
+.orbit-ring > * {
+  animation: orbitSpinReverse 30s linear infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* =============================================
+   BENTO GRID LAYOUT
+   ============================================= */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .bento-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* =============================================
+   FORM INPUTS
+   ============================================= */
+
+.form-input {
+  width: 100%;
+  background-color: #1f1f24;
+  border: 1px solid #494456;
+  color: #e4e1e9;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #958da2;
+  font-family: var(--font-jetbrains-mono);
+}
+
+.form-input:focus {
+  border-color: #6200ea;
+  box-shadow: 0 0 0 2px rgba(98, 0, 234, 0.2);
+}
+
+.form-input-dark {
+  width: 100%;
+  background-color: #16161e;
+  border: 1px solid #2a2a35;
+  color: #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  appearance: none;
+}
+
+.form-input-dark::placeholder {
+  color: #958da2;
+}
+
+.form-input-dark:focus {
+  border-color: #7b3fe4;
+  box-shadow: 0 0 0 1px #7b3fe4;
+}
+
+/* =============================================
+   BACKGROUND PATTERNS
+   ============================================= */
+
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(207, 188, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* =============================================
+   GRADIENT BORDERS
+   ============================================= */
+
+.gradient-border {
+  position: relative;
+  background: #121219;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  margin: -1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7b3fe4, #b854ff);
+}
+
+/* =============================================
+   TEXT GRADIENTS
+   ============================================= */
+
+.text-gradient-purple {
+  background: linear-gradient(135deg, #cfbcff 0%, #6200ea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(90deg, #7c3aed, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =============================================
+   PRICING CARD SPECIAL
+   ============================================= */
+
+.pricing-card-featured {
+  box-shadow: 0 10px 30px rgba(98, 0, 234, 0.15);
+}
+
+/* =============================================
+   ACCORDION
+   ============================================= */
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordion-content.open {
+  max-height: 500px;
+}
+
+/* =============================================
+   FILE INPUT
+   ============================================= */
+
+.file-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #16161e;
+  border: 1px solid #2a2a35;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.file-input-actual {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* =============================================
+   BUTTON STYLES
+   ============================================= */
+
+.btn-primary {
+  background: linear-gradient(135deg, #6200ea 0%, #7b3fe4 100%);
+  color: white;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(98, 0, 234, 0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #e4e1e9;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #494456;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #35343a;
+  border-color: #958da2;
+}

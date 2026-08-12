@@ -11,6 +11,13 @@ export function createClient() {
         detectSessionInUrl: true,
         flowType: 'pkce',
         storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+        storageKey: 'sb-auth-token',
+        debug: process.env.NODE_ENV === 'development',
+      },
+      cookieOptions: {
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
       },
     }
   );

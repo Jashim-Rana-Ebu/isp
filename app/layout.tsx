@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
@@ -46,7 +47,9 @@ export default function RootLayout({
       className={`dark ${hankenGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-background text-on-surface font-inter min-h-screen overflow-x-hidden antialiased selection:bg-primary-container selection:text-white">
-        {children}
+        <SupabaseProvider>
+          {children}
+        </SupabaseProvider>
       </body>
     </html>
   );

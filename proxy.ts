@@ -20,9 +20,16 @@ export async function proxy(request: NextRequest) {
           // Step 2: Create a fresh response that carries the updated request cookies
           supabaseResponse = NextResponse.next({ request });
           // Step 3: Write cookies into the response (so browser receives them)
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
+          cookiesToSet.forEach(({ name, value, options }) => {
+            // Ensure cookies work properly in production
+            const cookieOptions = {
+              ...options,
+              sameSite: 'lax' as const,
+              secure: process.env.NODE_ENV === 'production',
+              path: '/',
+            };
+            supabaseResponse.cookies.set(name, value, cookieOptions);
+          });
         },
       },
     }

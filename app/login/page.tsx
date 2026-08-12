@@ -28,18 +28,19 @@ export default function LoginPage() {
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
+      
       const { error: authError, data } = await supabase.auth.signInWithPassword({
         email: identifier,
         password,
       });
+      
       if (authError) throw authError;
       
-      // Ensure session is stored
-      if (data.session) {
-        await supabase.auth.setSession(data.session);
-      }
+      // Session is automatically stored by Supabase client
+      // Wait a moment for cookies to be set
+      await new Promise(resolve => setTimeout(resolve, 100));
       
-      // Force a hard navigation to ensure cookies are set
+      // Force a hard navigation to ensure cookies are properly sent
       window.location.href = "/dashboard";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
